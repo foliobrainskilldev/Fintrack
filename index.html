@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack | Advanced Personal Finance</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        gray: {
+                            850: '#1f2937',
+                            900: '#111827',
+                            950: '#030712',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 2s infinite',
+                        'float-fast': 'float 4s ease-in-out 1s infinite',
+                        'marquee-right': 'marquee-right 20s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        'marquee-right': {
+                            '0%': { transform: 'translateX(-50%)' },
+                            '100%': { transform: 'translateX(0%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(30px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .path-draw {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: draw 4s ease-in-out forwards;
+        }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+
+        .donut-chart {
+            background: conic-gradient(#3b82f6 0% 45%, #a855f7 45% 75%, #f43f5e 75% 100%);
+            border-radius: 50%;
+            position: relative;
+        }
+        .donut-inner {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #18181b;
+            border-radius: 50%;
+        }
+
+        .smooth-bevel {
+            background: linear-gradient(145deg, #ffffff, #e5e7eb);
+            border: 1px solid #ffffff;
+            box-shadow: 
+                inset 4px 4px 8px rgba(255, 255, 255, 1), 
+                inset -5px -5px 12px rgba(156, 163, 175, 0.45), 
+                12px 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white antialiased overflow-x-hidden selection:bg-blue-200 selection:text-blue-900">
+
+    <nav class="absolute top-0 w-full z-50 py-6 px-6 lg:px-12 flex justify-between items-center max-w-screen-2xl mx-auto left-0 right-0">
+        <div class="flex items-center gap-3">
+            <img src="fintrack-icon.png" alt="FinTrack Logo" class="w-10 h-10 object-contain drop-shadow-md">
+            <span class="font-display font-extrabold text-2xl tracking-tight text-gray-900">FinTrack</span>
+        </div>
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#features" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition">Pro Web</a>
+            <a href="#testimonials" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition">Reviews</a>
+            <a href="#faq" class="text-sm font-bold text-gray-600 hover:text-blue-600 transition">FAQ</a>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-16 lg:pt-40 lg:pb-20 px-4 lg:px-12 min-h-screen flex items-center overflow-hidden flex-col justify-center max-w-screen-2xl mx-auto">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-100 rounded-full mix-blend-multiply filter blur-[100px] opacity-70 animate-float -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100 rounded-full mix-blend-multiply filter blur-[100px] opacity-70 animate-float-delayed -z-10"></div>
+
+        <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 w-full">
+            <div class="fade-in-up" style="animation-delay: 0.1s;">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold mb-6 shadow-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                    </span>
+                    App version 2.0 is live
+                </div>
+                <h1 class="font-display text-5xl lg:text-[4.5rem] font-black text-gray-900 leading-[1.05] tracking-tight">
+                    Take Control of <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-500">Your Money</span>
+                </h1>
+                <p class="mt-6 text-lg lg:text-xl text-gray-500 leading-relaxed max-w-lg font-medium">
+                    The simplest expense tracker to finally understand where your money goes. Used by over 1 million people worldwide.
+                </p>
+                
+                <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                    <a href="#" class="flex items-center gap-3 bg-[#1D1D1F] text-white px-6 py-3 rounded-xl hover:bg-black hover:-translate-y-1 transition-all duration-300 shadow-xl border border-gray-800">
+                        <iconify-icon icon="ion:logo-apple-appstore" class="text-4xl text-[#1C86EE]"></iconify-icon>
+                        <div class="flex flex-col text-left">
+                            <span class="text-[10px] uppercase font-bold text-gray-400 leading-none mb-1">Download on the</span>
+                            <span class="text-[1.15rem] font-display font-extrabold leading-none tracking-wide">App Store</span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 bg-[#1D1D1F] text-white px-6 py-3 rounded-xl hover:bg-black hover:-translate-y-1 transition-all duration-300 shadow-xl border border-gray-800">
+                        <iconify-icon icon="logos:google-play-icon" class="text-3xl"></iconify-icon>
+                        <div class="flex flex-col text-left">
+                            <span class="text-[10px] uppercase font-bold text-gray-400 leading-none mb-1">GET IT ON</span>
+                            <span class="text-[1.15rem] font-display font-extrabold leading-none tracking-wide">Google Play</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="mt-8 flex items-center gap-2 text-sm text-gray-500 font-medium">
+                    <div class="flex -space-x-3">
+                        <img class="w-9 h-9 rounded-full border-2 border-white shadow-sm" src="https://ui-avatars.com/api/?name=J+D&background=random" alt="">
+                        <img class="w-9 h-9 rounded-full border-2 border-white shadow-sm" src="https://ui-avatars.com/api/?name=A+S&background=random" alt="">
+                        <img class="w-9 h-9 rounded-full border-2 border-white shadow-sm" src="https://ui-avatars.com/api/?name=M+R&background=random" alt="">
+                    </div>
+                    <div class="flex items-center gap-1 text-yellow-400 text-lg ml-3">
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    </div>
+                    <span class="ml-1 text-gray-900 font-bold">4.9/5</span> rating
+                </div>
+            </div>
+
+            <div class="relative w-full max-w-[280px] sm:max-w-[320px] mx-auto lg:ml-auto fade-in-up mt-12 lg:mt-0" style="animation-delay: 0.3s;">
+                <div class="absolute -left-12 sm:-left-28 -top-4 sm:-top-2 smooth-bevel p-3 sm:p-4 rounded-[1.25rem] flex items-center gap-3 animate-float-delayed z-40 scale-75 sm:scale-100 origin-top-left">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100">
+                        <iconify-icon icon="simple-icons:starbucks" class="text-2xl text-[#00704A]"></iconify-icon>
+                    </div>
+                    <div class="pr-2">
+                        <p class="text-sm font-bold text-gray-900 font-display">Starbucks</p>
+                        <p class="text-xs text-gray-500 font-bold">-$14.50</p>
+                    </div>
+                </div>
+
+                <div class="absolute -right-6 sm:-right-16 bottom-20 sm:bottom-32 smooth-bevel p-3 sm:p-4 rounded-[1.25rem] flex items-center gap-3 animate-float-fast z-40 scale-75 sm:scale-100 origin-bottom-right">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100">
+                        <iconify-icon icon="simple-icons:chase" class="text-xl text-[#117aca]"></iconify-icon>
+                    </div>
+                    <div class="pr-2">
+                        <p class="text-sm font-bold text-gray-900 font-display">Chase Bank</p>
+                        <p class="text-xs text-gray-500 font-bold">+$3,200.00</p>
+                    </div>
+                </div>
+
+                <div class="relative w-[280px] sm:w-[320px] h-[580px] sm:h-[650px] bg-gray-900 rounded-[2.5rem] sm:rounded-[3rem] border-[6px] sm:border-[8px] border-gray-900 shadow-2xl overflow-hidden shadow-blue-900/30 animate-float z-30">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-gray-900 rounded-b-2xl z-40 flex items-center justify-center gap-2">
+                        <div class="w-1.5 h-1.5 bg-gray-800 rounded-full"></div>
+                        <div class="w-10 h-1.5 bg-gray-800 rounded-full"></div>
+                    </div>
+                    
+                    <div class="w-full h-full bg-gray-50 flex flex-col relative overflow-y-auto no-scrollbar">
+                        <div class="w-full h-10 bg-blue-600 text-white flex justify-between items-center px-6 pt-2 text-[10px] font-medium z-20">
+                            <span>9:41</span>
+                            <div class="flex gap-1 items-center">
+                                <iconify-icon icon="solar:signal-bold" class="text-xs"></iconify-icon>
+                                <iconify-icon icon="solar:wifi-bold" class="text-xs"></iconify-icon>
+                                <iconify-icon icon="solar:battery-charge-bold" class="text-sm"></iconify-icon>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-600 px-5 pt-3 pb-20 rounded-b-[2rem] shadow-md relative z-10">
+                            <div class="flex justify-between items-center mb-5">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://ui-avatars.com/api/?name=User&background=random&color=fff" class="w-8 h-8 rounded-full border border-white/30" alt="User">
+                                    <div>
+                                        <p class="text-blue-200 text-[10px] leading-tight">Good morning,</p>
+                                        <p class="text-white font-bold text-xs font-display">Alex Doe</p>
+                                    </div>
+                                </div>
+                                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center relative">
+                                    <iconify-icon icon="solar:bell-bold" class="text-white text-sm"></iconify-icon>
+                                </div>
+                            </div>
+                            <p class="text-blue-100 text-[10px] font-medium mb-1">Total Balance</p>
+                            <h2 class="font-display text-white text-3xl sm:text-4xl font-extrabold tracking-tight">$4,250.00</h2>
+                        </div>
+                        
+                        <div class="flex-1 px-4 -mt-6 relative z-20">
+                            <div class="bg-white rounded-2xl shadow-sm p-4 mb-4 border border-gray-100">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-gray-900 font-extrabold text-xs font-display">Analytics</h3>
+                                    <span class="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">This Week</span>
+                                </div>
+                                <div class="flex items-end justify-between gap-1 sm:gap-1.5 h-20">
+                                    <div class="w-full bg-gray-100 rounded-t-sm h-[40%]"></div>
+                                    <div class="w-full bg-gray-100 rounded-t-sm h-[60%]"></div>
+                                    <div class="w-full bg-gray-100 rounded-t-sm h-[30%]"></div>
+                                    <div class="w-full bg-blue-600 rounded-t-sm h-[80%] relative shadow-[0_0_12px_rgba(37,99,235,0.4)]">
+                                        <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[8px] py-1 px-1.5 rounded font-bold shadow-lg">$120</div>
+                                    </div>
+                                    <div class="w-full bg-gray-100 rounded-t-sm h-[50%]"></div>
+                                    <div class="w-full bg-gray-100 rounded-t-sm h-[70%]"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-24">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-gray-900 font-extrabold text-xs font-display">Recent Activity</h3>
+                                    <a href="#" class="text-[9px] font-bold text-blue-600">See all</a>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl shadow-[0_2px_10px_rgb(0,0,0,0.02)] border border-gray-50">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 bg-white border border-gray-100 shadow-sm rounded-full flex items-center justify-center text-sm">
+                                                <iconify-icon icon="simple-icons:netflix" class="text-[16px] text-[#E50914]"></iconify-icon>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs font-bold font-display text-gray-900">Netflix</p>
+                                                <p class="text-[9px] text-gray-400 font-semibold">Yesterday</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-xs font-extrabold text-gray-900 font-display">-$14.99</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl shadow-[0_2px_10px_rgb(0,0,0,0.02)] border border-gray-50">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 bg-white border border-gray-100 shadow-sm rounded-full flex items-center justify-center text-sm">
+                                                <iconify-icon icon="simple-icons:target" class="text-[16px] text-[#cc0000]"></iconify-icon>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs font-bold font-display text-gray-900">Target</p>
+                                                <p class="text-[9px] text-gray-400 font-semibold">2 days ago</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-xs font-extrabold text-gray-900 font-display">-$62.30</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-0 w-full h-16 bg-white border-t border-gray-100 flex justify-around items-center px-3 pb-2 z-30 shadow-[0_-10px_20px_rgba(0,0,0,0.02)] rounded-b-[2rem]">
+                            <iconify-icon icon="solar:home-2-bold" class="text-[1.3rem] text-blue-600"></iconify-icon>
+                            <iconify-icon icon="solar:chart-square-bold" class="text-[1.3rem] text-gray-300"></iconify-icon>
+                            <div class="w-11 h-11 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-[0_5px_15px_rgba(37,99,235,0.4)] -mt-6 cursor-pointer">
+                                <iconify-icon icon="solar:add-circle-bold" class="text-2xl"></iconify-icon>
+                            </div>
+                            <iconify-icon icon="solar:card-bold" class="text-[1.3rem] text-gray-300"></iconify-icon>
+                            <iconify-icon icon="solar:user-bold" class="text-[1.3rem] text-gray-300"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="border-y border-gray-100 bg-gray-50/50 py-10 relative overflow-hidden reveal">
+        <p class="text-xs font-bold tracking-widest text-gray-400 uppercase font-display text-center mb-8">Featured In</p>
+        
+        <div class="flex w-max animate-marquee-right hover:[animation-play-state:paused]">
+            <div class="flex w-[100vw] min-w-[800px] justify-around items-center px-4">
+                <div class="flex items-center gap-2 text-[#0A831A] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:techcrunch" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">TechCrunch</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#7B0099] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:yahoo" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">yahoo!</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#DA552F] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:producthunt" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">Product Hunt</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#e1122b] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:theverge" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">The Verge</span>
+                </div>
+            </div>
+
+            <div class="flex w-[100vw] min-w-[800px] justify-around items-center px-4">
+                <div class="flex items-center gap-2 text-[#0A831A] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:techcrunch" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">TechCrunch</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#7B0099] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:yahoo" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">yahoo!</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#DA552F] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:producthunt" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">Product Hunt</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#e1122b] transition-transform hover:scale-105 cursor-default">
+                    <iconify-icon icon="simple-icons:theverge" class="text-4xl"></iconify-icon>
+                    <span class="font-extrabold text-2xl tracking-tighter">The Verge</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 lg:py-32 px-6 lg:px-12 bg-white relative overflow-hidden reveal">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            <div class="order-2 lg:order-1 relative">
+                <div class="absolute inset-0 bg-gradient-to-tr from-blue-100 to-purple-100 blur-3xl rounded-[3rem] -z-10 opacity-50"></div>
+                
+                <div class="relative smooth-bevel p-8 sm:p-10 rounded-[2rem]">
+                    <h3 class="font-display text-2xl font-extrabold text-gray-900 mb-8">AI Categorization</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2 font-display">
+                                <span class="font-bold text-gray-700">Housing</span>
+                                <span class="font-bold text-gray-900">40%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3">
+                                <div class="bg-blue-600 h-3 rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2 font-display">
+                                <span class="font-bold text-gray-700">Food & Dining</span>
+                                <span class="font-bold text-gray-900">25%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3">
+                                <div class="bg-purple-500 h-3 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2 font-display">
+                                <span class="font-bold text-gray-700">Transportation</span>
+                                <span class="font-bold text-gray-900">15%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3">
+                                <div class="bg-indigo-400 h-3 rounded-full" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-1 lg:order-2">
+                <span class="text-blue-600 font-bold tracking-widest uppercase text-sm font-display bg-blue-50 px-3 py-1.5 rounded-full">Automation</span>
+                <h2 class="font-display text-4xl lg:text-5xl font-black text-gray-900 mt-6 mb-6 tracking-tight">Zero Manual Entry. <br>Just Clear Insights.</h2>
+                <p class="text-lg text-gray-500 leading-relaxed font-medium">
+                    Connect your bank accounts securely. FinTrack automatically pulls your transactions and uses advanced AI to categorize them perfectly. You just watch the charts.
+                </p>
+                <div class="mt-8 grid grid-cols-2 gap-4 sm:gap-6">
+                    <div class="smooth-bevel p-4 sm:p-6 rounded-[2rem] aspect-square flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                        <iconify-icon icon="solar:shield-check-bold" class="text-blue-600 text-[2rem] sm:text-[2.5rem] mb-3 sm:mb-4"></iconify-icon>
+                        <p class="font-display font-bold text-gray-900 text-sm sm:text-lg leading-tight">256-bit<br>Security</p>
+                    </div>
+                    <div class="smooth-bevel p-4 sm:p-6 rounded-[2rem] aspect-square flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+                        <iconify-icon icon="solar:bolt-circle-bold" class="text-blue-600 text-[2rem] sm:text-[2.5rem] mb-3 sm:mb-4"></iconify-icon>
+                        <p class="font-display font-bold text-gray-900 text-sm sm:text-lg leading-tight">Real-time<br>Sync</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 lg:py-32 bg-gray-950 px-4 relative overflow-hidden reveal" id="features">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-blue-900/20 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto text-center mb-16 relative z-10">
+            <span class="text-blue-400 font-bold tracking-widest uppercase text-xs font-display border border-blue-500/30 px-3 py-1 rounded-full bg-blue-900/20">Pro Web Dashboard</span>
+            <h2 class="font-display text-4xl lg:text-6xl font-black text-white mt-6 mb-6 tracking-tight">Advanced Analytics for Power Users</h2>
+            <p class="text-lg text-gray-400 font-medium max-w-2xl mx-auto">
+                Sometimes your phone isn't enough. Dive into the deep end with our professional web dashboard. Custom date ranges, net worth tracking, and stunning dark mode UI.
+            </p>
+        </div>
+
+        <div class="relative max-w-5xl mx-auto z-10 px-2 sm:px-0">
+            <div class="bg-[#0a0a0a] p-2 sm:p-3 rounded-t-[1rem] sm:rounded-t-[2rem] border-t-2 border-x-2 border-gray-800 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] relative aspect-[16/11] sm:aspect-[16/10] flex flex-col">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-32 h-3 sm:h-5 bg-[#0a0a0a] rounded-b-xl sm:rounded-b-2xl flex justify-center items-center z-30">
+                    <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-800 rounded-full border border-gray-700"></div>
+                </div>
+
+                <div class="bg-[#121212] flex-1 rounded sm:rounded-xl overflow-hidden flex w-full relative border border-gray-800">
+                    <div class="hidden md:flex w-48 bg-[#18181b] border-r border-gray-800 flex-col py-4 px-3 z-10">
+                        <div class="flex items-center gap-2 mb-8 px-2">
+                            <iconify-icon icon="solar:wallet-bold" class="text-blue-500 text-lg"></iconify-icon>
+                            <span class="font-display font-bold text-sm text-white">FinTrack Pro</span>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="bg-blue-600/20 text-blue-400 border border-blue-500/20 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2">
+                                <iconify-icon icon="solar:chart-square-bold" class="text-sm"></iconify-icon> Overview
+                            </div>
+                            <div class="text-gray-400 hover:text-white px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2 transition">
+                                <iconify-icon icon="solar:pie-chart-2-bold" class="text-sm"></iconify-icon> Allocation
+                            </div>
+                            <div class="text-gray-400 hover:text-white px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2 transition">
+                                <iconify-icon icon="solar:card-bold" class="text-sm"></iconify-icon> Transactions
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 p-3 sm:p-5 flex flex-col gap-3 sm:gap-4 bg-[#0a0a0a] relative overflow-hidden overflow-y-auto no-scrollbar">
+                        <div class="grid grid-cols-3 gap-2 sm:gap-4">
+                            <div class="bg-[#18181b] p-3 sm:p-4 rounded-xl border border-gray-800">
+                                <p class="text-[8px] sm:text-xs text-gray-400 font-medium mb-1">Total Assets</p>
+                                <p class="font-display font-extrabold text-white text-sm sm:text-xl">$142,500</p>
+                            </div>
+                            <div class="bg-[#18181b] p-3 sm:p-4 rounded-xl border border-gray-800">
+                                <p class="text-[8px] sm:text-xs text-gray-400 font-medium mb-1">Total Liabilities</p>
+                                <p class="font-display font-extrabold text-white text-sm sm:text-xl">$32,100</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-3 sm:p-4 rounded-xl shadow-[0_0_30px_rgba(37,99,235,0.3)] border border-blue-500/50">
+                                <p class="text-[8px] sm:text-xs text-blue-200 font-medium mb-1">Net Worth</p>
+                                <p class="font-display font-extrabold text-white text-sm sm:text-2xl">$110,400</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                            <div class="md:col-span-2 bg-[#18181b] rounded-xl border border-gray-800 p-3 sm:p-4 flex flex-col">
+                                <h4 class="font-display font-bold text-gray-300 text-[10px] sm:text-sm mb-2">Net Worth Growth</h4>
+                                <div class="flex-1 w-full relative min-h-[80px]">
+                                    <svg class="w-full h-full overflow-visible" viewBox="0 0 600 150" preserveAspectRatio="none">
+                                        <defs>
+                                            <linearGradient id="neonGlow" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
+                                                <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M0 130 Q 150 90, 300 100 T 600 20 L 600 150 L 0 150 Z" fill="url(#neonGlow)" />
+                                        <path class="path-draw" d="M0 130 Q 150 90, 300 100 T 600 20" fill="none" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/>
+                                        <circle cx="600" cy="20" r="5" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#18181b] rounded-xl border border-gray-800 p-3 sm:p-4 flex flex-col items-center justify-center">
+                                <h4 class="font-display font-bold text-gray-300 text-[10px] sm:text-sm mb-3 w-full text-left">Allocation</h4>
+                                <div class="w-16 h-16 sm:w-24 sm:h-24 donut-chart flex-shrink-0 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                                    <div class="w-12 h-12 sm:w-16 sm:h-16 donut-inner flex items-center justify-center">
+                                        <span class="font-display font-bold text-[8px] sm:text-xs text-white">100%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#18181b] rounded-xl border border-gray-800 p-3 sm:p-4 mt-1 flex-1">
+                            <h4 class="font-display font-bold text-gray-300 text-[10px] sm:text-sm mb-3">Recent Transactions</h4>
+                            <div class="flex flex-col gap-2">
+                                <div class="flex justify-between items-center bg-[#232328] px-3 py-2 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <iconify-icon icon="mdi:apple" class="text-xl text-white"></iconify-icon>
+                                        <span class="font-display font-bold text-[9px] sm:text-xs text-white">Apple Store</span>
+                                    </div>
+                                    <span class="font-display font-bold text-[9px] sm:text-xs text-red-400">-$1,299.00</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-[#232328] px-3 py-2 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <iconify-icon icon="logos:stripe" class="text-lg text-white"></iconify-icon>
+                                        <span class="font-display font-bold text-[9px] sm:text-xs text-white">Stripe Payout</span>
+                                    </div>
+                                    <span class="font-display font-bold text-[9px] sm:text-xs text-green-400">+$4,500.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative w-[114%] -ml-[7%] flex flex-col items-center z-0">
+                <div class="w-full h-3 sm:h-5 bg-gradient-to-b from-gray-300 to-gray-500 rounded-b-xl sm:rounded-b-3xl border-t border-gray-400 shadow-[0_30px_60px_rgba(0,0,0,1)] relative z-10 flex justify-center">
+                    <div class="w-20 sm:w-28 h-1 sm:h-2 bg-gray-400 rounded-b-md"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-gray-50 border-b border-gray-100 overflow-hidden reveal" id="testimonials">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 mb-16">
+            <div class="text-center">
+                <h2 class="font-display text-4xl lg:text-5xl font-black text-gray-900 tracking-tight">Loved by users</h2>
+            </div>
+        </div>
+        
+        <div id="reviews-slider" class="flex overflow-x-auto gap-6 px-6 lg:px-12 pb-8 snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing w-full">
+            <div class="w-[350px] shrink-0 snap-center flex flex-col gap-6 bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-gray-100">
+                <div class="flex text-yellow-400 text-sm"><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon></div>
+                <p class="text-gray-600 font-medium leading-relaxed break-words whitespace-normal flex-1">"This app changed my life. I finally paid off my credit card debt because I could see exactly where my leaks were. The dark mode web dashboard is just gorgeous."</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Sarah+J&background=random" class="w-10 h-10 rounded-full" alt="User">
+                    <div>
+                        <p class="font-display font-extrabold text-gray-900 text-sm">Sarah Jenkins</p>
+                        <p class="text-xs text-gray-500">Freelance Designer</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-[350px] shrink-0 snap-center flex flex-col gap-6 bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-gray-100">
+                <div class="flex text-yellow-400 text-sm"><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon></div>
+                <p class="text-gray-600 font-medium leading-relaxed break-words whitespace-normal flex-1">"I've tried YNAB, Mint, and EveryDollar. FinTrack beats them all. The auto-categorization is magic, and it requires zero setup. Literally 5 minutes to connect my bank."</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Mike+T&background=random" class="w-10 h-10 rounded-full" alt="User">
+                    <div>
+                        <p class="font-display font-extrabold text-gray-900 text-sm">Mike Thompson</p>
+                        <p class="text-xs text-gray-500">Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-[350px] shrink-0 snap-center flex flex-col gap-6 bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-gray-100">
+                <div class="flex text-yellow-400 text-sm"><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon></div>
+                <p class="text-gray-600 font-medium leading-relaxed break-words whitespace-normal flex-1">"As a small business owner, tracking personal vs business expenses was a nightmare. This app handles it flawlessly. The Web Dashboard saves me hours of work."</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=Elena+R&background=random" class="w-10 h-10 rounded-full" alt="User">
+                    <div>
+                        <p class="font-display font-extrabold text-gray-900 text-sm">Elena Rodriguez</p>
+                        <p class="text-xs text-gray-500">Entrepreneur</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-[350px] shrink-0 snap-center flex flex-col gap-6 bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-gray-100">
+                <div class="flex text-yellow-400 text-sm"><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon></div>
+                <p class="text-gray-600 font-medium leading-relaxed break-words whitespace-normal flex-1">"Simple, intuitive and powerful. The graphs are beautiful and seeing my net worth climb gives me motivation to save more money everyday!"</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=David+W&background=random" class="w-10 h-10 rounded-full" alt="User">
+                    <div>
+                        <p class="font-display font-extrabold text-gray-900 text-sm">David Wright</p>
+                        <p class="text-xs text-gray-500">Marketing Director</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="review-dots" class="flex justify-center items-center gap-2 mt-4 pb-4">
+            <button class="w-8 h-2 rounded-full bg-blue-600 transition-all duration-300" aria-label="Go to slide 1"></button>
+            <button class="w-2 h-2 rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer transition-all duration-300" aria-label="Go to slide 2"></button>
+            <button class="w-2 h-2 rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer transition-all duration-300" aria-label="Go to slide 3"></button>
+            <button class="w-2 h-2 rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer transition-all duration-300" aria-label="Go to slide 4"></button>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white px-6 lg:px-12 reveal" id="faq">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="font-display text-4xl lg:text-5xl font-black text-gray-900 tracking-tight text-center mb-12">Got questions?</h2>
+            <div class="space-y-4">
+                <details class="bg-gray-50 rounded-2xl border border-gray-100 p-6 group cursor-pointer" open>
+                    <summary class="font-display font-extrabold text-lg text-gray-900 flex justify-between items-center outline-none">
+                        Is FinTrack safe to connect to my bank?
+                        <iconify-icon icon="solar:alt-arrow-down-bold" class="text-blue-600 group-open:rotate-180 transition-transform text-xl"></iconify-icon>
+                    </summary>
+                    <p class="text-gray-500 mt-4 font-medium leading-relaxed">Yes. We use industry-leading providers to securely connect to your bank accounts with bank-level 256-bit encryption. We never store or even see your banking credentials. You have read-only access to your data.</p>
+                </details>
+                <details class="bg-gray-50 rounded-2xl border border-gray-100 p-6 group cursor-pointer">
+                    <summary class="font-display font-extrabold text-lg text-gray-900 flex justify-between items-center outline-none">
+                        Is the web dashboard free?
+                        <iconify-icon icon="solar:alt-arrow-down-bold" class="text-gray-400 group-open:rotate-180 transition-transform text-xl"></iconify-icon>
+                    </summary>
+                    <p class="text-gray-500 mt-4 font-medium leading-relaxed">The mobile app is 100% free for everyday tracking. The advanced web dashboard and pro analytics require a FinTrack Pro subscription, which costs $4.99/month after a 14-day free trial.</p>
+                </details>
+                <details class="bg-gray-50 rounded-2xl border border-gray-100 p-6 group cursor-pointer">
+                    <summary class="font-display font-extrabold text-lg text-gray-900 flex justify-between items-center outline-none">
+                        Does it work outside the US?
+                        <iconify-icon icon="solar:alt-arrow-down-bold" class="text-gray-400 group-open:rotate-180 transition-transform text-xl"></iconify-icon>
+                    </summary>
+                    <p class="text-gray-500 mt-4 font-medium leading-relaxed">Yes! We support over 10,000 banks across North America, Europe, and parts of Latin America and Asia. The app automatically handles multiple currencies seamlessly.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 lg:px-12 bg-[#0A0A0B] text-center relative overflow-hidden reveal">
+        <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
+        
+        <div class="relative max-w-3xl mx-auto z-10">
+            <h2 class="font-display text-5xl lg:text-[4rem] font-black text-white mb-6 tracking-tight leading-tight">Ready to take control?</h2>
+            <p class="text-gray-400 text-lg lg:text-xl mb-12 font-medium">Download the app today and see where your money actually goes. Takes 2 minutes to set up.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#" class="flex items-center justify-center gap-3 bg-white text-gray-900 px-6 py-3.5 rounded-xl hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+                    <iconify-icon icon="ion:logo-apple-appstore" class="text-4xl text-[#1C86EE]"></iconify-icon>
+                    <div class="flex flex-col text-left">
+                        <span class="text-[10px] uppercase font-bold text-gray-500 leading-none mb-1">Download on the</span>
+                        <span class="text-lg font-display font-extrabold leading-none tracking-wide">App Store</span>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center justify-center gap-3 bg-white text-gray-900 px-6 py-3.5 rounded-xl hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+                    <iconify-icon icon="logos:google-play-icon" class="text-3xl"></iconify-icon>
+                    <div class="flex flex-col text-left">
+                        <span class="text-[10px] uppercase font-bold text-gray-500 leading-none mb-1">GET IT ON</span>
+                        <span class="text-lg font-display font-extrabold leading-none tracking-wide">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#030303] py-12 px-6 lg:px-12 border-t border-gray-900 reveal">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <img src="fintrack-icon.png" alt="FinTrack Logo" class="w-8 h-8 object-contain">
+                <span class="font-display font-extrabold text-xl text-white">FinTrack</span>
+            </div>
+            <div class="text-gray-600 text-sm font-medium">
+                &copy; 2024 FinTrack Technologies Inc. All rights reserved.
+            </div>
+            <div class="flex gap-5 text-gray-500">
+                <a href="#" class="hover:text-blue-500 transition"><iconify-icon icon="mdi:twitter" class="text-2xl"></iconify-icon></a>
+                <a href="#" class="hover:text-pink-500 transition"><iconify-icon icon="mdi:instagram" class="text-2xl"></iconify-icon></a>
+                <a href="#" class="hover:text-blue-600 transition"><iconify-icon icon="mdi:linkedin" class="text-2xl"></iconify-icon></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    } else {
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            const slider = document.getElementById('reviews-slider');
+            const dots = document.querySelectorAll('#review-dots button');
+            const slides = slider.children;
+
+            const sliderObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const index = Array.from(slides).indexOf(entry.target);
+                        dots.forEach((dot, i) => {
+                            if (i === index) {
+                                dot.className = 'w-8 h-2 rounded-full bg-blue-600 transition-all duration-300';
+                            } else {
+                                dot.className = 'w-2 h-2 rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer transition-all duration-300';
+                            }
+                        });
+                    }
+                });
+            }, { root: slider, threshold: 0.5 });
+
+            Array.from(slides).forEach(slide => sliderObserver.observe(slide));
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    slides[index].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
