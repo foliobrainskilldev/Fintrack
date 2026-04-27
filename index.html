@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinTrack | Advanced Personal Finance</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -35,12 +36,20 @@
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-15px)' },
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-15px)'
+                            },
                         },
                         'marquee-right': {
-                            '0%': { transform: 'translateX(-50%)' },
-                            '100%': { transform: 'translateX(0%)' },
+                            '0%': {
+                                transform: 'translateX(-50%)'
+                            },
+                            '100%': {
+                                transform: 'translateX(0%)'
+                            },
                         }
                     }
                 }
@@ -48,37 +57,62 @@
         }
     </script>
     <style>
-        .fade-in-up { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(30px); }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        
+        .fade-in-up {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .reveal {
             opacity: 0;
             transform: translateY(40px);
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
+
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         .path-draw {
             stroke-dasharray: 2000;
             stroke-dashoffset: 2000;
             animation: draw 4s ease-in-out forwards;
         }
-        @keyframes draw { to { stroke-dashoffset: 0; } }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
 
         .donut-chart {
             background: conic-gradient(#3b82f6 0% 45%, #a855f7 45% 75%, #f43f5e 75% 100%);
             border-radius: 50%;
             position: relative;
         }
+
         .donut-inner {
-            position: absolute; top: 50%; left: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
             background-color: #18181b;
             border-radius: 50%;
@@ -87,18 +121,38 @@
         .smooth-bevel {
             background: linear-gradient(145deg, #ffffff, #e5e7eb);
             border: 1px solid #ffffff;
-            box-shadow: 
-                inset 4px 4px 8px rgba(255, 255, 255, 1), 
-                inset -5px -5px 12px rgba(156, 163, 175, 0.45), 
+            box-shadow:
+                inset 4px 4px 8px rgba(255, 255, 255, 1),
+                inset -5px -5px 12px rgba(156, 163, 175, 0.45),
                 12px 20px 40px rgba(0, 0, 0, 0.08);
         }
 
-        details > summary { list-style: none; }
-        details > summary::-webkit-details-marker { display: none; }
-        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
+        details>summary {
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary~* {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
+
 <body class="font-sans text-gray-800 bg-white antialiased overflow-x-hidden selection:bg-blue-200 selection:text-blue-900">
 
     <nav class="absolute top-0 w-full z-50 py-6 px-6 lg:px-12 flex justify-between items-center max-w-screen-2xl mx-auto left-0 right-0">
@@ -132,7 +186,7 @@
                 <p class="mt-6 text-lg lg:text-xl text-gray-500 leading-relaxed max-w-lg font-medium">
                     The simplest expense tracker to finally understand where your money goes. Used by over 1 million people worldwide.
                 </p>
-                
+
                 <div class="mt-10 flex flex-col sm:flex-row gap-4">
                     <a href="#" class="flex items-center gap-3 bg-[#1D1D1F] text-white px-6 py-3 rounded-xl hover:bg-black hover:-translate-y-1 transition-all duration-300 shadow-xl border border-gray-800">
                         <iconify-icon icon="ion:logo-apple-appstore" class="text-4xl text-[#1C86EE]"></iconify-icon>
@@ -150,7 +204,7 @@
                         </div>
                     </a>
                 </div>
-                
+
                 <div class="mt-8 flex items-center gap-2 text-sm text-gray-500 font-medium">
                     <div class="flex -space-x-3">
                         <img class="w-9 h-9 rounded-full border-2 border-white shadow-sm" src="https://ui-avatars.com/api/?name=J+D&background=random" alt="">
@@ -194,7 +248,7 @@
                         <div class="w-1.5 h-1.5 bg-gray-800 rounded-full"></div>
                         <div class="w-10 h-1.5 bg-gray-800 rounded-full"></div>
                     </div>
-                    
+
                     <div class="w-full h-full bg-gray-50 flex flex-col relative overflow-y-auto no-scrollbar">
                         <div class="w-full h-10 bg-blue-600 text-white flex justify-between items-center px-6 pt-2 text-[10px] font-medium z-20">
                             <span>9:41</span>
@@ -221,7 +275,7 @@
                             <p class="text-blue-100 text-[10px] font-medium mb-1">Total Balance</p>
                             <h2 class="font-display text-white text-3xl sm:text-4xl font-extrabold tracking-tight">$4,250.00</h2>
                         </div>
-                        
+
                         <div class="flex-1 px-4 -mt-6 relative z-20">
                             <div class="bg-white rounded-2xl shadow-sm p-4 mb-4 border border-gray-100">
                                 <div class="flex justify-between items-center mb-4">
@@ -239,7 +293,7 @@
                                     <div class="w-full bg-gray-100 rounded-t-sm h-[70%]"></div>
                                 </div>
                             </div>
-                            
+
                             <div class="mb-24">
                                 <div class="flex justify-between items-center mb-3">
                                     <h3 class="text-gray-900 font-extrabold text-xs font-display">Recent Activity</h3>
@@ -258,7 +312,7 @@
                                         </div>
                                         <span class="text-xs font-extrabold text-gray-900 font-display">-$14.99</span>
                                     </div>
-                                    
+
                                     <div class="flex items-center justify-between bg-white p-2.5 rounded-xl shadow-[0_2px_10px_rgb(0,0,0,0.02)] border border-gray-50">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 bg-white border border-gray-100 shadow-sm rounded-full flex items-center justify-center text-sm">
@@ -292,7 +346,7 @@
 
     <section class="border-y border-gray-100 bg-gray-50/50 py-10 relative overflow-hidden reveal">
         <p class="text-xs font-bold tracking-widest text-gray-400 uppercase font-display text-center mb-8">Featured In</p>
-        
+
         <div class="flex w-max animate-marquee-right hover:[animation-play-state:paused]">
             <div class="flex w-[100vw] min-w-[800px] justify-around items-center px-4">
                 <div class="flex items-center gap-2 text-[#0A831A] transition-transform hover:scale-105 cursor-default">
@@ -336,10 +390,10 @@
 
     <section class="py-20 lg:py-32 px-6 lg:px-12 bg-white relative overflow-hidden reveal">
         <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
+
             <div class="order-2 lg:order-1 relative">
                 <div class="absolute inset-0 bg-gradient-to-tr from-blue-100 to-purple-100 blur-3xl rounded-[3rem] -z-10 opacity-50"></div>
-                
+
                 <div class="relative smooth-bevel p-8 sm:p-10 rounded-[2rem]">
                     <h3 class="font-display text-2xl font-extrabold text-gray-900 mb-8">AI Categorization</h3>
                     <div class="space-y-6">
@@ -453,13 +507,13 @@
                                     <svg class="w-full h-full overflow-visible" viewBox="0 0 600 150" preserveAspectRatio="none">
                                         <defs>
                                             <linearGradient id="neonGlow" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
-                                                <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+                                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4" />
+                                                <stop offset="100%" stop-color="#a855f7" stop-opacity="0" />
                                             </linearGradient>
                                         </defs>
                                         <path d="M0 130 Q 150 90, 300 100 T 600 20 L 600 150 L 0 150 Z" fill="url(#neonGlow)" />
-                                        <path class="path-draw" d="M0 130 Q 150 90, 300 100 T 600 20" fill="none" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/>
-                                        <circle cx="600" cy="20" r="5" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+                                        <path class="path-draw" d="M0 130 Q 150 90, 300 100 T 600 20" fill="none" stroke="#60a5fa" stroke-width="3" stroke-linecap="round" />
+                                        <circle cx="600" cy="20" r="5" fill="#fff" stroke="#3b82f6" stroke-width="2" />
                                     </svg>
                                 </div>
                             </div>
@@ -497,7 +551,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="relative w-[114%] -ml-[7%] flex flex-col items-center z-0">
                 <div class="w-full h-3 sm:h-5 bg-gradient-to-b from-gray-300 to-gray-500 rounded-b-xl sm:rounded-b-3xl border-t border-gray-400 shadow-[0_30px_60px_rgba(0,0,0,1)] relative z-10 flex justify-center">
                     <div class="w-20 sm:w-28 h-1 sm:h-2 bg-gray-400 rounded-b-md"></div>
@@ -512,7 +566,7 @@
                 <h2 class="font-display text-4xl lg:text-5xl font-black text-gray-900 tracking-tight">Loved by users</h2>
             </div>
         </div>
-        
+
         <div id="reviews-slider" class="flex overflow-x-auto gap-6 px-6 lg:px-12 pb-8 snap-x snap-mandatory no-scrollbar cursor-grab active:cursor-grabbing w-full">
             <div class="w-[350px] shrink-0 snap-center flex flex-col gap-6 bg-white p-8 rounded-3xl shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-gray-100">
                 <div class="flex text-yellow-400 text-sm"><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon><iconify-icon icon="solar:star-bold"></iconify-icon></div>
@@ -603,11 +657,11 @@
     <section class="py-24 px-6 lg:px-12 bg-[#0A0A0B] text-center relative overflow-hidden reveal">
         <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
         <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
-        
+
         <div class="relative max-w-3xl mx-auto z-10">
             <h2 class="font-display text-5xl lg:text-[4rem] font-black text-white mb-6 tracking-tight leading-tight">Ready to take control?</h2>
             <p class="text-gray-400 text-lg lg:text-xl mb-12 font-medium">Download the app today and see where your money actually goes. Takes 2 minutes to set up.</p>
-            
+
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#" class="flex items-center justify-center gap-3 bg-white text-gray-900 px-6 py-3.5 rounded-xl hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
                     <iconify-icon icon="ion:logo-apple-appstore" class="text-4xl text-[#1C86EE]"></iconify-icon>
@@ -648,13 +702,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const revealElements = document.querySelectorAll('.reveal');
-            
-            const revealObserver = new IntersectionObserver((entries) => {
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                    } else {
-                        entry.target.classList.remove('active');
+                        observer.unobserve(entry.target);
                     }
                 });
             }, {
@@ -681,7 +734,10 @@
                         });
                     }
                 });
-            }, { root: slider, threshold: 0.5 });
+            }, {
+                root: slider,
+                threshold: 0.5
+            });
 
             Array.from(slides).forEach(slide => sliderObserver.observe(slide));
 
@@ -697,4 +753,5 @@
         });
     </script>
 </body>
+
 </html>
