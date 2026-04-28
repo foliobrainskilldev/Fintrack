@@ -70,18 +70,6 @@
             }
         }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, transform;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -344,7 +332,7 @@
         </div>
     </section>
 
-    <section class="border-y border-gray-100 bg-gray-50/50 py-10 relative overflow-hidden reveal">
+    <section class="border-y border-gray-100 bg-gray-50/50 py-10 relative overflow-hidden">
         <p class="text-xs font-bold tracking-widest text-gray-400 uppercase font-display text-center mb-8">Featured In</p>
 
         <div class="flex w-max animate-marquee-right hover:[animation-play-state:paused]">
@@ -388,7 +376,7 @@
         </div>
     </section>
 
-    <section class="py-20 lg:py-32 px-6 lg:px-12 bg-white relative overflow-hidden reveal">
+    <section class="py-20 lg:py-32 px-6 lg:px-12 bg-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
             <div class="order-2 lg:order-1 relative">
@@ -448,7 +436,7 @@
         </div>
     </section>
 
-    <section class="py-24 lg:py-32 bg-gray-950 px-4 relative overflow-hidden reveal" id="features">
+    <section class="py-24 lg:py-32 bg-gray-950 px-4 relative overflow-hidden" id="features">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-blue-900/20 rounded-full blur-[140px] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto text-center mb-16 relative z-10">
@@ -560,7 +548,7 @@
         </div>
     </section>
 
-    <section class="py-24 bg-gray-50 border-b border-gray-100 overflow-hidden reveal" id="testimonials">
+    <section class="py-24 bg-gray-50 border-b border-gray-100 overflow-hidden" id="testimonials">
         <div class="max-w-7xl mx-auto px-6 lg:px-12 mb-16">
             <div class="text-center">
                 <h2 class="font-display text-4xl lg:text-5xl font-black text-gray-900 tracking-tight">Loved by users</h2>
@@ -625,7 +613,7 @@
         </div>
     </section>
 
-    <section class="py-24 bg-white px-6 lg:px-12 reveal" id="faq">
+    <section class="py-24 bg-white px-6 lg:px-12" id="faq">
         <div class="max-w-3xl mx-auto">
             <h2 class="font-display text-4xl lg:text-5xl font-black text-gray-900 tracking-tight text-center mb-12">Got questions?</h2>
             <div class="space-y-4">
@@ -654,7 +642,7 @@
         </div>
     </section>
 
-    <section class="py-24 px-6 lg:px-12 bg-[#0A0A0B] text-center relative overflow-hidden reveal">
+    <section class="py-24 px-6 lg:px-12 bg-[#0A0A0B] text-center relative overflow-hidden">
         <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
         <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-600 rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
 
@@ -682,7 +670,7 @@
         </div>
     </section>
 
-    <footer class="bg-[#030303] py-12 px-6 lg:px-12 border-t border-gray-900 reveal">
+    <footer class="bg-[#030303] py-12 px-6 lg:px-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3">
                 <img src="fintrack-icon.png" alt="FinTrack Logo" class="w-8 h-8 object-contain">
@@ -701,22 +689,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const revealElements = document.querySelectorAll('.reveal');
-
-            const revealObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
-            });
-
-            revealElements.forEach(el => revealObserver.observe(el));
-
             const slider = document.getElementById('reviews-slider');
             const dots = document.querySelectorAll('#review-dots button');
             const slides = slider.children;
